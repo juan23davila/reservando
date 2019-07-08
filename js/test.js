@@ -13,16 +13,6 @@ describe('Test Proyecto Reservando', ()=>{
         "../img/desayuno2.jpg",
         [8, 3, 9, 5, 6, 7]
     );
-
-    /*before(()=>{
-        algo a ejecutar
-    })
-    beforeEach(), after() y afterEach */
-            //expect(suma).to.be.a('string');
-            //expect(suma).to.be.an('array');
-            //expect({a:2}).to.eql({a:2}).but.not.equal({a:2});
-                //si la u y sin la a se compara vada valor del objeto
-                //Se compara todo tal cual pero no cada propiedad
   
 
     describe('Prueba de Reservar Horario', ()=>{
@@ -39,12 +29,12 @@ describe('Test Proyecto Reservando', ()=>{
         it('Cuando se reserva un horario que el restaurant no posee, el arreglo se mantiene igual', ()=>{
             let horariosDisponibles = restaurante.horarios;
             restaurante.reservarHorario('12:00');
-            expect(restaurante.horarios).to.equal(horariosDisponibles);
+            expect(restaurante.horarios).to.eql(horariosDisponibles);
         })
         it('Cuando se intenta reservar un horario pero no se le pasa ningún parámetro a la función, el arreglo se mantiene igual', ()=>{
             let horariosDisponibles = restaurante.horarios;
             restaurante.reservarHorario();
-            expect(restaurante.horarios).to.equal(horariosDisponibles);
+            expect(restaurante.horarios).to.eql(horariosDisponibles);
         })
     })
 
