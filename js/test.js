@@ -160,4 +160,54 @@ describe('Test Proyecto Reservando', ()=>{
             expect(tGoodRestaurant.ubicacion).to.equal("Nueva York");
         })
     })
+    describe("Pruebas métodos de Reserva", ()=>{
+        it('Se crea una reserva con éxito', ()=>{
+            let reserva = new Reserva(
+                new Date(2019,07,10,12,30),
+                2, 
+                15,
+                null
+            );
+            expect(reserva.cantidadPersonas).to.equal(2);
+        })
+        it('El precio base se calcula correctamente', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales ni descuentos', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva con costos adicionales de horario pero sin descuentos', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva con costos adicionales de fin de semana pero sin descuentos', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva con costos adicionales de horario y de fin de semana pero sin descuentos', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales pero con descuento por grupoGrande (4-6)', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales pero con descuento por grupoGrande (7-8)', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales pero con descuento por grupoGrande (>8)', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES15', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES200', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES1', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES15 y por personas (7-8)', ()=>{
+            
+        })
+        it('Se calcula precio total de reserva con todos los costos adicionales y con los descuentos DES200 y grupoGrande (4-6)', ()=>{
+            
+        })
+    })
 })
