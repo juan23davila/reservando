@@ -15,7 +15,7 @@ describe('Test Proyecto Reservando', ()=>{
     );
   
 
-    describe('Prueba de Reservar Horario', ()=>{
+    describe('Reservar Horario', ()=>{
         it('Cuando se reserva un horario de un restaurant, este se elimina del arreglo', ()=>{
             let cantidadHorarios = restaurante.horarios.length;
             restaurante.reservarHorario('14:00');
@@ -39,7 +39,7 @@ describe('Test Proyecto Reservando', ()=>{
     })
 
 
-    describe('Prueba de Obtener Puntuacion', ()=>{
+    describe('Obtener Puntuacion', ()=>{
         it('Dado un restaurant con determinadas calificaciones, la puntuación (que es el promedio de ellas) se calcula correctamente', ()=>{
             let sumatoria = 0;
             for(let i = 0; i< restaurante.calificaciones.length; i++){
@@ -57,7 +57,7 @@ describe('Test Proyecto Reservando', ()=>{
 
     })
 
-    describe('Prueba de Calificar', ()=>{
+    describe('Calificar', ()=>{
         it('Al agregar el promedio sea correcto y existan mas calificaciones', ()=>{
             restaurante.calificaciones = [8, 3, 9, 5, 6, 7];
             let cantidadCalificacionesInicial = restaurante.calificaciones.length;
@@ -95,7 +95,7 @@ describe('Test Proyecto Reservando', ()=>{
 
     // Pruebas del objeto Listado
     var listado = new Listado(listadoDeRestaurantes);
-    describe('Prueba de Buscar Restaurante', ()=>{
+    describe('Buscar Restaurante', ()=>{
         it('Se obtiene restaurante por id', ()=>{
             let restaurante = listado.buscarRestaurante(23);
             expect(restaurante.id).to.equal(23);
@@ -107,7 +107,7 @@ describe('Test Proyecto Reservando', ()=>{
         })
 
     })
-    describe('Prueba de Obtener Restaurantes', ()=>{
+    describe('Obtener Restaurantes', ()=>{
         it('Se hace la consulta sin enviar parametros y no obtiene ningún restaurante', ()=>{
             let restaurantes = listado.obtenerRestaurantes();
             expect(restaurantes).to.be.an('array');
@@ -160,10 +160,10 @@ describe('Test Proyecto Reservando', ()=>{
             expect(tGoodRestaurant.ubicacion).to.equal("Nueva York");
         })
     })
-    describe("Pruebas métodos de Reserva", ()=>{
+    describe("Métodos de Reserva", ()=>{
         it('Se crea una reserva con éxito', ()=>{
             let reserva = new Reserva(
-                new Date(2019,07,10,12,30),
+                new Date(2019,6,10,12,30),
                 2, 
                 15,
                 null
@@ -171,43 +171,69 @@ describe('Test Proyecto Reservando', ()=>{
             expect(reserva.cantidadPersonas).to.equal(2);
         })
         it('El precio base se calcula correctamente', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 11, 00), 8, 350, "DES1");
+            let precioBase = reserva1.calcularPrecioBase();
+            expect(precioBase).to.equal(2800);
         })
         it('Se calcula precio total de reserva sin costos adicionales ni descuentos', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 11, 00), 2, 350, null);
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(700);
         })
         it('Se calcula precio total de reserva con costos adicionales de horario pero sin descuentos', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 20, 30), 2, 350, null);
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(735);
         })
         it('Se calcula precio total de reserva con costos adicionales de fin de semana pero sin descuentos', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 26, 19, 30), 2, 350, null);
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(770);
         })
         it('Se calcula precio total de reserva con costos adicionales de horario y de fin de semana pero sin descuentos', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 26, 13, 15), 2, 350, null);
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(805);
         })
         it('Se calcula precio total de reserva sin costos adicionales pero con descuento por grupoGrande (4-6)', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 12, 15), 4, 350, null);
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(1330);
         })
         it('Se calcula precio total de reserva sin costos adicionales pero con descuento por grupoGrande (7-8)', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 12, 15), 8, 350, null);
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(2520);
         })
         it('Se calcula precio total de reserva sin costos adicionales pero con descuento por grupoGrande (>8)', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 12, 15), 20, 350, null);
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(5950);
         })
         it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES15', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 12, 15), 3, 350, 'DES15');
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(892.5);
         })
         it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES200', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 12, 15), 3, 350, 'DES200');
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(850);
         })
         it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES1', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 12, 15), 3, 350, 'DES1');
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(700);
         })
         it('Se calcula precio total de reserva sin costos adicionales pero con descuento por cod DES15 y por personas (7-8)', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 24, 12, 15), 7, 350, 'DES15');
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(1837.5);
         })
         it('Se calcula precio total de reserva con todos los costos adicionales y con los descuentos DES200 y grupoGrande (4-6)', ()=>{
-            
+            var reserva1 = new Reserva (new Date(2019, 6, 27, 13, 15), 7, 350, 'DES15');
+            let precioTotalReserva = reserva1.calcularPrecioTotalReserva();
+            expect(precioTotalReserva).to.equal(2205);
         })
     })
 })

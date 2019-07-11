@@ -12,36 +12,34 @@ Reserva.prototype.calcularPrecioBase = function(){
 /**
  * Obtiene descuento por grupo grande
  */
-function calcularDescPorGrupoGrande(precioBase){
+function calcularDescPorGrupoGrande(precioBase, cantidadPersonas){
     let descuentoGrupo = 0;
-
-    if(this.cantidadPersonas < 4){
-        return descuentoGrupo;
-    }
-    else if(4 <= this.cantidadPersonas && this.cantidadPersonas <= 6){
-        descuentoGrupo = precioBase * 0.05;
-    }else if(7 <= this.cantidadPersonas && this.cantidadPersonas <= 8){
-        descuentoGrupo = precioBase * 0.1;
-    }else{
-        descuentoGrupo = precioBase * 0.15;
-    }
+    if(cantidadPersonas >= 4){
+        if(4 <= cantidadPersonas && cantidadPersonas <= 6){
+            descuentoGrupo = precioBase * 0.05;
+        }else if(7 <= cantidadPersonas && cantidadPersonas <= 8){
+            descuentoGrupo = precioBase * 0.1;
+        }else{
+            descuentoGrupo = precioBase * 0.15;
+        }
+    }    
     return descuentoGrupo;
 }
 
 /**
  * Obtiene descuento por codigo
  */
-function calcularDescPorCodigo(precioBase){
+function calcularDescPorCodigo(precioBase, codDescuento, precioPorPersona){
     let descuentoCod = 0;
 
-    if(this.codDescuento == null){
+    if(codDescuento == null){
         return descuentoCod;
-    }else if(this.codDescuento == "DES15"){
+    }else if(codDescuento == "DES15"){
         descuentoCod = precioBase * 0.15;
-    }else if(this.codDescuento == "DES200"){
+    }else if(codDescuento == "DES200"){
         descuentoCod = 200;
-    }else if(this.codDescuento == "DES1"){
-        descuentoCod = this.precioPorPersona;
+    }else if(codDescuento == "DES1"){
+        descuentoCod = precioPorPersona;
     }
     return descuentoCod;
 }
@@ -49,17 +47,17 @@ function calcularDescPorCodigo(precioBase){
 /**
  * Obtiene el descuento total de la reserva
  */
-function calcularDescuentos(precioBase){
-    var descGrupo = calcularDescPorGrupoGrande(precioBase);
-    var descCod = calcularDescPorCodigo(precioBase);
+function calcularDescuentos(precioBase, cantidadPersonas, codDescuento, precioPorPersona){
+    var descGrupo = calcularDescPorGrupoGrande(precioBase, cantidadPersonas);
+    var descCod = calcularDescPorCodigo(precioBase, codDescuento, precioPorPersona);
     return descGrupo + descCod;
 }
 
 /**
  * Calcula costo adicional si la reserva es en una hora concurrida
  */
-function calcularAddHora(precioBase){
-    let soloHora = this.horario.getHours();
+function calcularAddHora(precioBase,horario){
+    let soloHora = horario.getHours();
     if(soloHora == '13' || soloHora == '20'){
         return precioBase * 0.05;
     }
@@ -69,8 +67,8 @@ function calcularAddHora(precioBase){
 /**
  * Calcula costo adicional si hace la reserva el fin de semana
  */
-function calcularAddFinde(precioBase){
-    let diaSemana = this.horario.getDay();
+function calcularAddFinde(precioBase,horario){
+    let diaSemana = horario.getDay();
     if(diaSemana == 0 || diaSemana == 5 || diaSemana == 6){
         return precioBase * 0.1;
     }
@@ -80,19 +78,19 @@ function calcularAddFinde(precioBase){
 /**
  * Obtiene el total de los costos adicionales de la reserva
  */
-function calcularAdicionales(precioBase){
-    var addPorHorario = calcularAddHora(precioBase);
-    var addPorFinde = calcularAddFinde(precioBase);
+function calcularAdicionales(precioBase, horario){
+    var addPorHorario = calcularAddHora(precioBase,horario);
+    var addPorFinde = calcularAddFinde(precioBase,horario);
     return addPorHorario + addPorFinde;
 }
 
 /**
  * Calcula el precio total de una reserva
  */
-Reserva.prototype.calcularPrecioTotalReserva = function(adicionales){
-    let precioBase = calcularPrecioBase();
-    let descuentos = calcularDescuentos(precioBase);
-    let adicionales = calcularAdicionales(precioBase);
+Reserva.prototype.calcularPrecioTotalReserva = function(){
+    let precioBase = this.calcularPrecioBase();
+    let descuentos = calcularDescuentos(precioBase, this.cantidadPersonas, this.codDescuento, this.precioPorPersona);
+    let adicionales = calcularAdicionales(precioBase, this.horario);
     return (precioBase + adicionales - descuentos);
 }
 
